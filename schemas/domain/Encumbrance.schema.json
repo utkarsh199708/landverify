@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "amount": {
+      "properties": {
+        "paise": {
+          "type": "integer"
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "holder": {
+      "type": "string"
+    },
+    "released": {
+      "type": "boolean"
+    },
+    "source": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": {
+      "enum": [
+        "MORTGAGE",
+        "CHARGE",
+        "LIS_PENDENS",
+        "LEASE",
+        "RESTORATION_CLAIM",
+        "REVENUE_COURT_PROCEEDING"
+      ],
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

@@ -1,0 +1,112 @@
+{
+  "$defs": {
+    "PartyId": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "canonicalName": {
+      "type": "string"
+    },
+    "categoryFacts": {
+      "items": {
+        "properties": {
+          "asOf": {
+            "format": "date",
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "ST",
+              "SC",
+              "BC",
+              "GENERAL"
+            ],
+            "type": "string"
+          },
+          "evidence": {
+            "type": "object"
+          },
+          "sourceDocument": {
+            "properties": {
+              "value": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "id": {
+      "$ref": "#/$defs/PartyId"
+    },
+    "panMasked": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "relationships": {
+      "items": {
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "other": {
+            "$ref": "#/$defs/PartyId"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "role": {
+      "enum": [
+        "HOLDER",
+        "TRANSFEROR",
+        "TRANSFEREE",
+        "BORROWER",
+        "HEIR",
+        "LITIGANT",
+        "OTHER"
+      ],
+      "type": "string"
+    },
+    "variants": {
+      "items": {
+        "properties": {
+          "fathersName": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "script": {
+            "enum": [
+              "DEVANAGARI",
+              "ENGLISH",
+              "KAITHI",
+              "URDU"
+            ],
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "type": "object"
+}

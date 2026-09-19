@@ -1,0 +1,120 @@
+{
+  "$defs": {
+    "Money-nullable": {
+      "properties": {
+        "paise": {
+          "type": "integer"
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "PartyId": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "consideration": {
+      "$ref": "#/$defs/Money-nullable"
+    },
+    "date": {
+      "format": "date",
+      "type": "string"
+    },
+    "dcSanctionRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fromParties": {
+      "items": {
+        "$ref": "#/$defs/PartyId"
+      },
+      "type": "array"
+    },
+    "id": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "instrument": {
+      "enum": [
+        "SALE",
+        "GIFT",
+        "RELEASE",
+        "PARTITION",
+        "SUCCESSION",
+        "COURT_DECREE",
+        "SETTLEMENT",
+        "SUB_LEASE_ASSIGNMENT"
+      ],
+      "type": "string"
+    },
+    "mutation": {
+      "enum": [
+        "NOT_APPLIED",
+        "APPLIED",
+        "RECORDED",
+        "OBJECTED",
+        "UNKNOWN"
+      ],
+      "type": "string"
+    },
+    "origin": {
+      "enum": [
+        "RECORDED",
+        "INFERRED",
+        "CUSTOMARY"
+      ],
+      "type": "string"
+    },
+    "registrationRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "stampPaid": {
+      "$ref": "#/$defs/Money-nullable"
+    },
+    "supportingDocuments": {
+      "items": {
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "toParties": {
+      "items": {
+        "$ref": "#/$defs/PartyId"
+      },
+      "type": "array"
+    },
+    "validation": {
+      "enum": [
+        "UNVALIDATED",
+        "VALID",
+        "DEFECTIVE",
+        "VOID"
+      ],
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

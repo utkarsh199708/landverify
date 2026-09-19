@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "caseNumber": {
+      "type": "string"
+    },
+    "forum": {
+      "enum": [
+        "CIVIL_COURT",
+        "SAR",
+        "DCLR",
+        "CO"
+      ],
+      "type": "string"
+    },
+    "matchConfidence": {
+      "type": "number"
+    },
+    "partiesMatched": {
+      "items": {
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "relevance": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

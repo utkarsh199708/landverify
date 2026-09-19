@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "decision": {
+      "properties": {
+        "actor": {
+          "type": "string"
+        },
+        "at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "ACCEPT",
+            "OVERRIDE",
+            "VERIFY"
+          ],
+          "type": "string"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "evidence": {
+      "items": {
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "id": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "machineRationale": {
+      "type": "string"
+    },
+    "packVersion": {
+      "type": "string"
+    },
+    "ruleId": {
+      "type": "string"
+    },
+    "severity": {
+      "enum": [
+        "BLOCKER",
+        "MAJOR",
+        "MINOR",
+        "INFO"
+      ],
+      "type": "string"
+    },
+    "subject": {
+      "type": "object"
+    },
+    "verificationInstruction": {
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

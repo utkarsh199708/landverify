@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "fields": {
+      "items": {
+        "properties": {
+          "confidence": {
+            "type": "number"
+          },
+          "grounding": {
+            "type": "object"
+          },
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "id": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "pages": {
+      "type": "integer"
+    },
+    "rawFileRef": {
+      "type": "string"
+    },
+    "script": {
+      "enum": [
+        "DEVANAGARI",
+        "ENGLISH",
+        "KAITHI",
+        "URDU"
+      ],
+      "type": "string"
+    },
+    "source": {
+      "enum": [
+        "PORTAL",
+        "UPLOAD",
+        "RUNNER",
+        "TRANSCRIPTION"
+      ],
+      "type": "string"
+    },
+    "trust": {
+      "enum": [
+        "OFFICIAL_RECORD",
+        "CERTIFIED_COPY",
+        "HUMAN_TRANSCRIPTION",
+        "BORROWER_SUPPLIED"
+      ],
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

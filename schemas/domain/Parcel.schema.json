@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "anchal": {
+      "type": "string"
+    },
+    "area": {
+      "properties": {
+        "squareMetresTimes100": {
+          "type": "integer"
+        }
+      },
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "csKhatianRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "district": {
+      "type": "string"
+    },
+    "flatOrHoldingNumber": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "id": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "khataNumber": {
+      "type": "string"
+    },
+    "kism": {
+      "properties": {
+        "asOf": {
+          "format": "date",
+          "type": "string"
+        },
+        "evidence": {
+          "type": "object"
+        },
+        "kism": {
+          "enum": [
+            "RAIYATI",
+            "KHAS_MAHAL",
+            "GAIR_MAZARUA_KHAS",
+            "GAIR_MAZARUA_AAM",
+            "BHUINHARI",
+            "KHUNTKATTI"
+          ],
+          "type": "string"
+        },
+        "sourceDocument": {
+          "properties": {
+            "value": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "mauza": {
+      "type": "string"
+    },
+    "plotNumber": {
+      "type": "string"
+    },
+    "rsKhatianRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "thanaNumber": {
+      "type": "string"
+    },
+    "ulpin": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "type": "object"
+}
