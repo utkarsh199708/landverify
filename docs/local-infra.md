@@ -29,9 +29,15 @@ All ports bind to `127.0.0.1` only — nothing is reachable off the loopback
 interface. All containers share one Docker network named `title`. The Compose
 project name is `title-engine`, so volumes are `title-engine_<name>`.
 
+**Kafka has two bootstrap addresses.** Clients running in another container on the
+`title` network connect to `kafka:19092` (advertised listener `PLAINTEXT`); the
+`19092` port is internal to the network and not published. Clients on the developer
+machine connect to `127.0.0.1:9092` (advertised listener `PLAINTEXT_HOST`, the only
+published Kafka port). M0-T4 services must bootstrap to `kafka:19092`.
+
 | Service | Role (HLD §9) | Image | Host port(s) | Credentials |
 | --- | --- | --- | --- | --- |
-| `kafka` | Event log (KRaft, single node, PLAINTEXT) | `apache/kafka:3.8.0` | `127.0.0.1:9092` | none (PLAINTEXT) |
+| `kafka` | Event log (KRaft, single node, PLAINTEXT) | `apache/kafka:3.8.0` | `127.0.0.1:9092` (host) | none (PLAINTEXT) |
 | `mongo` | Case DB | `mongo:7` | `127.0.0.1:27017` | none locally; db `$MONGO_INITDB_DATABASE` |
 | `postgres` | Audit ledger (schema is M1-T4) | `postgres:16` | `127.0.0.1:5432` | `$POSTGRES_USER` / `$POSTGRES_PASSWORD`, db `$POSTGRES_DB` |
 | `opensearch` | Name-resolution search index | `opensearchproject/opensearch:2.17.0` | `127.0.0.1:9200` | security plugin disabled (local only) |
@@ -45,9 +51,8 @@ from `.env.example`. Nothing is hard-coded in `docker-compose.yml` outside
 
 ### `.env.example` contents
 
-The repository's permission policy currently denies creating `.env*` files, so the
-template could not be committed as a file (tracked in `QUESTIONS.md` under M0-T2).
-Create `.env` yourself with these values — they match the compose defaults:
+`.env.example` is committed at the repo root. Run `cp .env.example .env` (or rely on
+the compose `${VAR:-default}` fallbacks). Its contents — matching the defaults:
 
 ```dotenv
 POSTGRES_USER=title
@@ -65,7 +70,7 @@ OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
 Every long-running service has a healthcheck that exercises the **service**, not just
 the TCP port (`interval 5s`, `timeout 5s`, `retries 18`, `start_period 20s`):
 
-- kafka — `kafka-topics.sh --list` through the broker
+- kafka — `kafka-topics.sh --list` through the broker (host listener, `localhost:9092`)
 - mongo — `db.runCommand({ ping: 1 })`
 - postgres — `pg_isready -U $POSTGRES_USER -d $POSTGRES_DB`
 - opensearch — `_cluster/health?wait_for_status=yellow`
@@ -91,7 +96,15 @@ printing one line per store and exiting non-zero — naming the store — on any
   depends on it via `service_completed_successfully`. To keep `minio-init` a true
   one-shot (it exits 0) while `make up` still returns 0, a tiny long-lived
   `infra-ready` container (reusing the `mc` image) depends on `minio-init` completing.
-  It can be removed once M0-T4 adds real services that depend on `minio-init`.
+  This is a Compose-v5 workaround and should be removed once M0-T4 adds real services
+  that depend on `minio-init` (they will hold `--wait` open themselves).
+  Because `minio-init` exits, `docker compose ps` (without `-a`) hides it — use
+  `docker compose ps -a` to see it in `exited (0)`:
+
+  ```bash
+  docker compose ps -a --format json | \
+    python -c "import sys,json; rows=[json.loads(l) for l in sys.stdin if l.strip()]; print({r['Service']: (r.get('State'), r.get('Health',''), r.get('ExitCode')) for r in rows})"
+  ```
 
 ## Resetting state
 
