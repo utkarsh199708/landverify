@@ -176,16 +176,3 @@ services:
         mc mb --ignore-existing "local/$$MINIO_BUCKET"
         mc version enable "local/$$MINIO_BUCKET"
         echo "minio-init: bucket $$MINIO_BUCKET ready with versioning"
-
-  # Long-lived no-op gate so `docker compose up --wait` returns 0 while minio-init
-  # remains a one-shot (see the note above). Reuses the mc image already pulled for
-  # minio-init — no extra dependency. It starts only after minio-init completes
-  # successfully, then blocks forever; `--wait` treats it as satisfied once running.
-  infra-ready:
-    image: quay.io/minio/mc:RELEASE.2024-08-17T11-33-50Z
-    networks: [title]
-    depends_on:
-      minio-init:
-        condition: service_completed_successfully
-    entrypoint: ["/bin/sh", "-c"]
-    command: ["exec tail -f /dev/null"]

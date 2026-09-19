@@ -1,0 +1,75 @@
+# Application services overlay (M0-T4). Layers the four Spring Boot services on top of the
+# infra in docker-compose.yml:
+#   docker compose -f docker-compose.yml -f docker-compose.services.yml up -d --build --wait
+#
+# Each service:
+#   - builds from its own Dockerfile with the repo root as context (so Gradle sees libs/);
+#   - publishes its port on the loopback interface only (matching the infra convention);
+#   - joins the shared `title` network so it can reach kafka/mongo/postgres/minio by name;
+#   - depends on kafka, mongo, postgres (service_healthy) and minio-init
+#     (service_completed_successfully). Nothing consumes these yet — the dependency graph is
+#     the contract for later milestones (HLD §4, §9). Because these four now depend on
+#     minio-init completing, they replace the base file's removed `infra-ready` gate: they
+#     hold `docker compose up --wait` open themselves (see docs/local-infra.md).
+#
+# KAFKA_BOOTSTRAP_SERVERS uses the internal advertised listener kafka:19092 (host clients use
+# 127.0.0.1:9092); unused until M1-T2 but fixes the contract now.
+
+x-service-deps: &service-deps
+  kafka:
+    condition: service_healthy
+  mongo:
+    condition: service_healthy
+  postgres:
+    condition: service_healthy
+  minio-init:
+    condition: service_completed_successfully
+
+services:
+  edge:
+    build:
+      context: .
+      dockerfile: services/edge/Dockerfile
+    image: title-engine/edge:dev
+    networks: [title]
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+    depends_on: *service-deps
+
+  case:
+    build:
+      context: .
+      dockerfile: services/case/Dockerfile
+    image: title-engine/case:dev
+    networks: [title]
+    ports:
+      - "127.0.0.1:8081:8081"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+    depends_on: *service-deps
+
+  engine:
+    build:
+      context: .
+      dockerfile: services/engine/Dockerfile
+    image: title-engine/engine:dev
+    networks: [title]
+    ports:
+      - "127.0.0.1:8082:8082"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+    depends_on: *service-deps
+
+  review:
+    build:
+      context: .
+      dockerfile: services/review/Dockerfile
+    image: title-engine/review:dev
+    networks: [title]
+    ports:
+      - "127.0.0.1:8083:8083"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+    depends_on: *service-deps
