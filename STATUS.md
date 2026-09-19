@@ -5,7 +5,7 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 | Milestone | State | Waves done | Last integrated | Notes |
 | --- | --- | --- | --- | --- |
 | M0 Repo bootstrap | **done** 2026-09-19 | 4 | 09bb5ea (T1–T4) | exit: `make up && make lint && make test && make down` → 0 locally (9 containers, 22 gradle tasks, 2 pytest); CI green on main |
-| M1 Domain + case service | not started | 0 | — | |
+| M1 Domain + case service | in progress | 0 | — | wave 1 = T1+T4 dispatched 2026-09-19; wave 2 = T2+T5+T6; wave 3 = T3; wave 4 = T7 |
 | M2 Rules engine + JH pack | not started | 0 | — | needs human legal sign-off before merge (PLAN §6) |
 | M3 Title engine | not started | 0 | — | |
 | M4 Doc processing + gateway | not started | 0 | — | |
@@ -22,6 +22,8 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 | M0-T2 | merged 2026-09-19 | wave/M0-T2 | SEND BACK (.env.example, Kafka listeners) → MERGE | a34dc29 |
 | M0-T3 | merged 2026-09-19; CI green on main (run 35443289078) | wave/M0-T3 | MERGE | e1cdc01 + 153df0d |
 | M0-T4 | merged 2026-09-19 | wave/M0-T4 | MERGE (+ Makefile follow-up) | 09bb5ea |
+| M1-T1 | dispatched 2026-09-19 | wave/M1-T1 | | |
+| M1-T4 | dispatched 2026-09-19 | wave/M1-T4 | | |
 
 ## Deferred MAJORs
 
