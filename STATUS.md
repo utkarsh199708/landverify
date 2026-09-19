@@ -4,7 +4,7 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 
 | Milestone | State | Waves done | Last integrated | Notes |
 | --- | --- | --- | --- | --- |
-| M0 Repo bootstrap | in progress | 3 | a34dc29 (T1, T2, T3) | T4 running; exit check pending |
+| M0 Repo bootstrap | **done** 2026-09-19 | 4 | 09bb5ea (T1–T4) | exit: `make up && make lint && make test && make down` → 0 locally (9 containers, 22 gradle tasks, 2 pytest); CI green on main |
 | M1 Domain + case service | not started | 0 | — | |
 | M2 Rules engine + JH pack | not started | 0 | — | needs human legal sign-off before merge (PLAN §6) |
 | M3 Title engine | not started | 0 | — | |
