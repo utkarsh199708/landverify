@@ -14,7 +14,7 @@ class FindingTest {
     return new Finding(
         new FindingId("f1"),
         Severity.BLOCKER,
-        "JH-CNT-046-01",
+        "sample-rule-01",
         "2026.09",
         new ParcelSubject(new ParcelId("p1")),
         evidence,

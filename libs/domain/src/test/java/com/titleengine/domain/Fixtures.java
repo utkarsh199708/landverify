@@ -21,6 +21,6 @@ final class Fixtures {
   static RuleEvidence ruleEvidence() {
     SortedMap<String, String> facts = new TreeMap<>();
     facts.put("parcel.kism", "raiyati");
-    return new RuleEvidence("JH-CNT-046-01", "2026.09", facts);
+    return new RuleEvidence("sample-rule-01", "2026.09", facts);
   }
 }
