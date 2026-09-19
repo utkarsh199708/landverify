@@ -1,0 +1,23 @@
+# secrets
+.env
+.env.*
+secrets/
+
+# build
+build/
+.gradle/
+out/
+dist/
+node_modules/
+__pycache__/
+.venv/
+*.pyc
+
+# claude
+.claude/settings.local.json
+.claude/agent-memory-local/
+.claude/worktrees/
+
+# ide
+.idea/
+.vscode/
