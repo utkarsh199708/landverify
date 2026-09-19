@@ -11,3 +11,7 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-web")
   testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
+
+// bootJar is the only artifact; disable the plain jar so build/libs holds exactly one
+// jar and the Dockerfile can copy it by wildcard.
+tasks.named("jar") { enabled = false }

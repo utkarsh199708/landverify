@@ -10,14 +10,19 @@ no OpenSearch index templates or analysis plugins.
 ```bash
 cp .env.example .env          # optional: compose has ${VAR:-default} fallbacks
 docker compose pull           # first pull is ~2 GB; do this before timing a start
-make up                       # = docker compose up -d --wait --wait-timeout 90
+make up                       # infra + the four services (both compose files), --wait
 bash scripts/infra-smoke.sh   # one OK line per store; exit 0 iff all answer
-make down                     # = docker compose down -v --remove-orphans
+make down                     # tears the whole two-file stack down, removes volumes
 ```
 
-The **first** `make up` may exceed the 90 s wait timeout because it is pulling
-images (~2 GB). Run `docker compose pull` once first; subsequent cold starts come up
-in ~10–15 s on a warm image cache.
+Since M0-T4, `make up` brings up the infra **plus** the four application services
+(it runs both compose files, `docker-compose.yml` and `docker-compose.services.yml`).
+For infra-only work, run `docker compose -f docker-compose.yml up -d` directly — but note
+the base file alone no longer passes `--wait` (see the `minio-init` note below).
+
+The **first** `make up` may exceed the wait timeout because it is pulling images
+(~2 GB) and building the four service images. Run `docker compose pull` once first;
+subsequent cold starts come up in ~10–15 s on a warm image cache.
 
 > `.env` is git-ignored. `docker-compose.yml` reads every credential via
 > `${VAR:-default}`, so the stack also runs with **no** `.env` at all (it uses the
@@ -43,7 +48,6 @@ published Kafka port). M0-T4 services must bootstrap to `kafka:19092`.
 | `opensearch` | Name-resolution search index | `opensearchproject/opensearch:2.17.0` | `127.0.0.1:9200` | security plugin disabled (local only) |
 | `minio` | S3-compatible object store (versioned) | `quay.io/minio/minio:RELEASE.2024-08-29T01-40-52Z` | `127.0.0.1:9000` (S3), `127.0.0.1:9001` (console) | `$MINIO_ROOT_USER` / `$MINIO_ROOT_PASSWORD` |
 | `minio-init` | One-shot: creates bucket `$MINIO_BUCKET` with versioning, then exits 0 | `quay.io/minio/mc:RELEASE.2024-08-17T11-33-50Z` | — | uses MinIO root creds |
-| `infra-ready` | Wait-gate only (see note) | `quay.io/minio/mc:…` | — | — |
 
 Credentials come from `.env` (see the template below), which the developer copies
 from `.env.example`. Nothing is hard-coded in `docker-compose.yml` outside
@@ -91,13 +95,21 @@ printing one line per store and exiting non-zero — naming the store — on any
 - **MinIO image registry:** Docker Hub now gates `minio/minio` behind auth (anonymous
   pulls return 401), so the images are pulled from `quay.io/minio/*` at the same
   pinned versions.
-- **`infra-ready` gate:** this Compose build (v5.5.1) fails `docker compose up --wait`
-  if *any* container has exited — even with code 0 — unless a still-running service
-  depends on it via `service_completed_successfully`. To keep `minio-init` a true
-  one-shot (it exits 0) while `make up` still returns 0, a tiny long-lived
-  `infra-ready` container (reusing the `mc` image) depends on `minio-init` completing.
-  This is a Compose-v5 workaround and should be removed once M0-T4 adds real services
-  that depend on `minio-init` (they will hold `--wait` open themselves).
+- **`minio-init` exits, so the base file alone no longer passes `--wait`:** this Compose
+  build (v5.5.1) fails `docker compose up --wait` if *any* container has exited — even
+  with code 0 — unless a still-running service depends on it via
+  `service_completed_successfully`. M0-T2 held `make up` green with a throwaway
+  `infra-ready` gate; **M0-T4 removed that gate** because the four application services in
+  `docker-compose.services.yml` now depend on `minio-init` completing and hold `--wait`
+  open themselves. Consequence: `docker compose up -d --wait` on the **base file alone**
+  again exits non-zero once `minio-init` finishes (the containers still start correctly —
+  only the `--wait` gate reports failure). For a full stack that passes `--wait`, use the
+  two-file command:
+
+  ```bash
+  docker compose -f docker-compose.yml -f docker-compose.services.yml up -d --wait
+  ```
+
   Because `minio-init` exits, `docker compose ps` (without `-a`) hides it — use
   `docker compose ps -a` to see it in `exited (0)`:
 

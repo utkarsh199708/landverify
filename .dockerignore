@@ -1,0 +1,11 @@
+# Keep the Docker build context (repo root) free of host build output and local state so
+# the in-container Gradle build starts clean and reproducible (M0-T4).
+**/build/
+.gradle/
+.git
+.github/
+.claude/
+web/node_modules/
+**/.venv/
+*.iml
+.idea/

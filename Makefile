@@ -3,11 +3,17 @@
 # `&&` (not `;`) so a failure in the first toolchain stops the target non-zero.
 .PHONY: up down test lint fmt rules-test
 
+# up/down drive the full two-file stack: infra (docker-compose.yml) plus the four
+# application services (docker-compose.services.yml). The base file alone no longer
+# passes --wait after M0-T4 removed the infra-ready gate; use it directly only for
+# infra-only work (see docs/local-infra.md).
+COMPOSE := docker compose -f docker-compose.yml -f docker-compose.services.yml
+
 up:
-	docker compose up -d --wait --wait-timeout 90
+	$(COMPOSE) up -d --build --wait --wait-timeout 300
 
 down:
-	docker compose down -v --remove-orphans
+	$(COMPOSE) down -v --remove-orphans
 
 test:
 	./gradlew test && uv run pytest

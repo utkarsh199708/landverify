@@ -35,3 +35,20 @@ Durable environment quirks for the title-engine repo on this Windows/Git Bash ma
 - Makefile `up`/`down` are owned by M0-T1: `up: docker compose up -d --wait --wait-timeout 90`,
   `down: docker compose down -v --remove-orphans`. Compose project name should be set via
   top-level `name: title-engine`; `.gitattributes` already forces LF for `*.sh`.
+- **`eclipse-temurin:21-jre` ships bash**, so a container `HEALTHCHECK` can hit `/health`
+  with `bash -c 'exec 3<>/dev/tcp/127.0.0.1/PORT; printf "GET /health HTTP/1.1\r\nHost:
+  localhost\r\nConnection: close\r\n\r\n" >&3; grep -q "\"status\":\"UP\"" <&3'` — no need to
+  apt-install curl/wget into the runtime image (keeps it "only the boot jar"). Used for the
+  four M0-T4 service Dockerfiles.
+- **Service Dockerfiles: invoke the wrapper as `sh ./gradlew ...`, not `./gradlew`.** The
+  build context is created on Windows where gradlew loses its exec bit, so relying on the bit
+  fails only in some contexts; `sh ./gradlew` is identical on Linux/Windows. Disable the plain
+  jar (`tasks.named("jar"){enabled=false}`) so `build/libs/<svc>.jar` is unambiguous for a
+  wildcard `COPY`.
+- **`infra-ready` gate (M0-T2) was removed in M0-T4.** Once real services `depend_on`
+  `minio-init` with `service_completed_successfully`, they hold `--wait` open themselves, so
+  the throwaway gate is redundant. Consequence: `docker compose up --wait` on the **base file
+  alone** now exits non-zero (minio-init exits with no running dependent) — use the two-file
+  command `-f docker-compose.yml -f docker-compose.services.yml` for a stack that passes
+  `--wait`. Added a repo-root `.dockerignore` (excludes `**/build/`, `.gradle/`, `.git`,
+  `.claude/`) so the build context stays clean.
