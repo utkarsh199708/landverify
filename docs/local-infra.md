@@ -10,14 +10,19 @@ no OpenSearch index templates or analysis plugins.
 ```bash
 cp .env.example .env          # optional: compose has ${VAR:-default} fallbacks
 docker compose pull           # first pull is ~2 GB; do this before timing a start
-make up                       # = docker compose up -d --wait --wait-timeout 90
+make up                       # infra + the four services (both compose files), --wait
 bash scripts/infra-smoke.sh   # one OK line per store; exit 0 iff all answer
-make down                     # = docker compose down -v --remove-orphans
+make down                     # tears the whole two-file stack down, removes volumes
 ```
 
-The **first** `make up` may exceed the 90 s wait timeout because it is pulling
-images (~2 GB). Run `docker compose pull` once first; subsequent cold starts come up
-in ~10–15 s on a warm image cache.
+Since M0-T4, `make up` brings up the infra **plus** the four application services
+(it runs both compose files, `docker-compose.yml` and `docker-compose.services.yml`).
+For infra-only work, run `docker compose -f docker-compose.yml up -d` directly — but note
+the base file alone no longer passes `--wait` (see the `minio-init` note below).
+
+The **first** `make up` may exceed the wait timeout because it is pulling images
+(~2 GB) and building the four service images. Run `docker compose pull` once first;
+subsequent cold starts come up in ~10–15 s on a warm image cache.
 
 > `.env` is git-ignored. `docker-compose.yml` reads every credential via
 > `${VAR:-default}`, so the stack also runs with **no** `.env` at all (it uses the

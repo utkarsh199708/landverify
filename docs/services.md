@@ -62,12 +62,17 @@ jar, and declares a `HEALTHCHECK` against `/health`.
 
 ## Run the full stack (infra + services)
 
-`docker-compose.services.yml` is an overlay on the infra file. Bring up everything with:
+`docker-compose.services.yml` is an overlay on the infra file. `make up` brings up the
+infra plus these four services (it runs both compose files); `make down` tears the whole
+two-file stack down. The equivalent explicit commands are:
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.services.yml up -d --build --wait
 docker compose -f docker-compose.yml -f docker-compose.services.yml down -v --remove-orphans
 ```
+
+For infra-only work, run `docker compose -f docker-compose.yml up -d` directly (the base
+file alone no longer passes `--wait`; see `docs/local-infra.md`).
 
 Each service depends on `kafka`, `mongo`, `postgres` (`service_healthy`) and on `minio-init`
 (`service_completed_successfully`). Nothing consumes these stores yet — the dependency graph is
