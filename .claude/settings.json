@@ -37,9 +37,10 @@
       "Bash(git push -f *)",
       "Bash(git reset --hard *)",
       "Bash(rm -rf /*)",
+      "Read(./secrets/**)",
       "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(./secrets/**)"
+      "Read(./.env.local)",
+      "Read(./.env.*.local)"
     ]
   }
 }
