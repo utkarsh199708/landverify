@@ -1,13 +1,17 @@
 package com.titleengine.domain;
 
-/** Type of encumbrance over a parcel (HLD 3). */
+/**
+ * Type of encumbrance over a parcel (HLD 3). Wire names are generic vocabulary only; the statute
+ * behind a restoration claim lives in a state rule pack as a citation, never here (non-negotiable
+ * 3).
+ */
 public enum EncumbranceType {
   MORTGAGE("mortgage"),
   CHARGE("charge"),
   LIS_PENDENS("lis pendens"),
   LEASE("lease"),
-  S71A_RESTORATION_CLAIM("s.71A restoration claim"),
-  SAR_PROCEEDING("SAR proceeding");
+  RESTORATION_CLAIM("restoration claim"),
+  REVENUE_COURT_PROCEEDING("revenue court proceeding");
 
   private final String wire;
 

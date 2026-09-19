@@ -24,6 +24,17 @@ class CategoryFactTest {
   }
 
   @Test
+  void rejects_rule_evidence() {
+    // A rule firing can never source a category; only a document or transcript can.
+    DocumentId source = new DocumentId("khatian-1");
+    assertThatThrownBy(
+            () ->
+                new CategoryFact(
+                    Category.ST, LocalDate.parse("2020-01-01"), source, Fixtures.ruleEvidence()))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void accepts_evidence_grounded_in_source_document() {
     DocumentId source = new DocumentId("khatian-1");
     CategoryFact fact =

@@ -108,7 +108,7 @@ non-blank hypothesis and verification instruction — the reason and the way to 
 
 | Field | Type | §3 source | Validation |
 | --- | --- | --- | --- |
-| type | EncumbranceType | type (mortgage/charge/lis pendens/lease/s.71A/SAR) | non-null enum |
+| type | EncumbranceType | type (mortgage/charge/lis pendens/lease/restoration claim/revenue court proceeding) | non-null enum |
 | holder | String | holder | non-blank |
 | amount | Optional<Money> | amount | Optional; integer paise |
 | source | DocumentId | source | non-null |

@@ -24,6 +24,17 @@ class KismFactTest {
   }
 
   @Test
+  void rejects_rule_evidence() {
+    // A rule firing can never source a kism; only a document or transcript can.
+    DocumentId source = new DocumentId("khatian-1");
+    assertThatThrownBy(
+            () ->
+                new KismFact(
+                    Kism.RAIYATI, LocalDate.parse("2019-06-01"), source, Fixtures.ruleEvidence()))
+        .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  @Test
   void accepts_evidence_grounded_in_source_document() {
     DocumentId source = new DocumentId("khatian-1");
     KismFact fact =

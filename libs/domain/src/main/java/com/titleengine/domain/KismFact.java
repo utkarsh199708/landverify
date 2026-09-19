@@ -14,6 +14,10 @@ public record KismFact(
     Objects.requireNonNull(asOf, "asOf");
     Objects.requireNonNull(sourceDocument, "sourceDocument");
     Objects.requireNonNull(evidence, "evidence");
+    // A rule firing cannot source a kism; only a document or transcript can (HLD §3, §6).
+    if (!(evidence instanceof DocumentEvidence || evidence instanceof TranscriptEvidence)) {
+      throw new IllegalArgumentException("evidence must be document- or transcript-grounded");
+    }
     DocumentId grounded = Guards.groundedDocumentId(evidence);
     if (grounded == null || !grounded.equals(sourceDocument)) {
       throw new IllegalArgumentException("evidence must point at sourceDocument");

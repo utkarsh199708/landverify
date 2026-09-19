@@ -32,8 +32,8 @@
         "CHARGE",
         "LIS_PENDENS",
         "LEASE",
-        "S71A_RESTORATION_CLAIM",
-        "SAR_PROCEEDING"
+        "RESTORATION_CLAIM",
+        "REVENUE_COURT_PROCEEDING"
       ],
       "type": "string"
     }

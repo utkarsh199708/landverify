@@ -15,6 +15,10 @@ public record CategoryFact(
     Objects.requireNonNull(asOf, "asOf");
     Objects.requireNonNull(sourceDocument, "sourceDocument");
     Objects.requireNonNull(evidence, "evidence");
+    // A rule firing cannot source a category; only a document or transcript can (non-negotiable 4).
+    if (!(evidence instanceof DocumentEvidence || evidence instanceof TranscriptEvidence)) {
+      throw new IllegalArgumentException("evidence must be document- or transcript-grounded");
+    }
     DocumentId grounded = Guards.groundedDocumentId(evidence);
     if (grounded == null || !grounded.equals(sourceDocument)) {
       throw new IllegalArgumentException("evidence must point at sourceDocument");
