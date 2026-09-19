@@ -1,0 +1,65 @@
+# CI gate for PLAN.md §1.6 "Main is always green. Nothing merges red."
+# Runs the same commands the Makefile runs (HLD §14 tech stack: Java 21 + uv).
+# The java and python jobs run the two toolchains directly for fast, cached feedback;
+# the make job then exercises the Makefile itself so CI and `make` cannot drift.
+name: ci
+
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+
+# Cancel superseded runs on the same ref; the newest push/PR head is the one that matters.
+concurrency: { group: "ci-${{ github.ref }}", cancel-in-progress: true }
+
+# No secrets exist yet; read-only token is all CI needs.
+permissions: { contents: read }
+
+jobs:
+  java:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+      - run: ./gradlew spotlessCheck checkstyleMain checkstyleTest test --no-daemon
+
+  python:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv python install 3.12
+      - run: uv sync --frozen
+      - run: uv run ruff check . && uv run ruff format --check .
+      - run: uv run pytest
+
+  make:
+    runs-on: ubuntu-latest
+    needs: [java, python]
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+      - uses: astral-sh/setup-uv@v3
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv python install 3.12
+      - run: make lint && make test
+      # make rules-test PACK=jh VERSION=<v>  — enabled by M2-T3
