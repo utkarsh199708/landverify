@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "from": {
+      "format": "date",
+      "type": "string"
+    },
+    "hypothesis": {
+      "type": "string"
+    },
+    "to": {
+      "format": "date",
+      "type": "string"
+    },
+    "verificationInstruction": {
+      "type": "string"
+    }
+  },
+  "type": "object"
+}

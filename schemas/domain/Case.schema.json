@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "borrowerPartyIds": {
+      "items": {
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "createdAt": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "id": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "lenderRef": {
+      "type": "string"
+    },
+    "parcelId": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "status": {
+      "enum": [
+        "RECEIVED",
+        "ACQUIRING",
+        "PROCESSING",
+        "ANALYSING",
+        "IN_REVIEW",
+        "BLOCKED",
+        "SIGNED",
+        "DELIVERED"
+      ],
+      "type": "string"
+    },
+    "tenantId": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "type": "object"
+}

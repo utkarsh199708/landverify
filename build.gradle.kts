@@ -1,7 +1,9 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.quality.CheckstyleExtension
+import org.gradle.kotlin.dsl.getByType
 
-// Root build applies one shared Java convention to every subproject (HLD §4, §14).
+// Root build applies one shared Java convention to every leaf subproject (HLD §4, §14).
 // Module build files stay a few lines: services add Spring Boot and their library deps,
 // libraries add nothing. No service depends on another service.
 plugins {
@@ -10,7 +12,14 @@ plugins {
   alias(libs.plugins.spotless) apply false
 }
 
-subprojects {
+// The version-catalog accessor `libs` is not generated inside `subprojects {}` / `configure(...)`,
+// so resolve the catalog once here and look up test coordinates by name (M1-T1 Behaviour 9b).
+val catalog = rootProject.extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+// Apply the convention to leaf modules only. `:libs` and `:services` are container nodes created by
+// the nested include() in settings.gradle.kts; a stray src/ under them must not be silently built
+// (M1-T1 Behaviour 9a, deferred from M0-T1).
+configure(subprojects.filter { it.childProjects.isEmpty() }) {
   apply(plugin = "java-library")
   apply(plugin = "checkstyle")
   apply(plugin = "com.diffplug.spotless")
@@ -49,13 +58,12 @@ subprojects {
     configFile = rootProject.file("config/checkstyle/checkstyle.xml")
   }
 
-  // JUnit 5 + AssertJ for every module. The version-catalog `libs` accessor is not
-  // available inside `subprojects {}`, so these coordinates are pinned inline here;
+  // JUnit 5 + AssertJ for every module, sourced from the version catalog (M1-T1 Behaviour 9b);
   // Spring versions stay in gradle/libs.versions.toml and are applied in each service.
   dependencies {
-    "testImplementation"(platform("org.junit:junit-bom:5.10.3"))
-    "testImplementation"("org.junit.jupiter:junit-jupiter")
-    "testImplementation"("org.assertj:assertj-core:3.26.3")
-    "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
+    "testImplementation"(platform(catalog.findLibrary("junit-bom").get()))
+    "testImplementation"(catalog.findLibrary("junit-jupiter").get())
+    "testImplementation"(catalog.findLibrary("assertj-core").get())
+    "testRuntimeOnly"(catalog.findLibrary("junit-platform-launcher").get())
   }
 }

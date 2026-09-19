@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "advocateOpinion": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "caseId": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "chainSummary": {
+      "type": "string"
+    },
+    "deliveredTo": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "findingIds": {
+      "items": {
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "id": {
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "signatureRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "version": {
+      "type": "integer"
+    }
+  },
+  "type": "object"
+}
