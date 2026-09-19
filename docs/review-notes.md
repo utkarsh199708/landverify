@@ -16,3 +16,9 @@ The `reviewer` agent is read-only (no `Write`), so it cannot persist its own mem
 - **Service jars** are copied by explicit name (`<svc>.jar`) and `/health` reports `version: "dev"` only because `project.version` is unspecified. If a task adds release versioning, check the Dockerfile `COPY` and the version fallback together.
 - **MinIO images** come from `quay.io` (Docker Hub gates them); same pinned tags.
 - **Criterion commands using `docker compose ps`** must use `-a` to see exited one-shot containers.
+
+## Parallel waves and briefs
+
+- **Gradle daemon contention.** With two worktrees building at once, `make lint test` can exit 2 with "Gradle build daemon has been stopped: stop command received" and no test or lint error. Re-run once before treating it as a failure.
+- **Exact-copy interfaces can smuggle state tokens.** Statute names (e.g. "s.71A") never belong in `libs/domain` or engine code, even when HLD §3 lists them; the pack cites the statute. Institution names (SAR, DCLR, CO) and tenure vocabulary (raiyati, khas mahal) are allowed. If a brief pins such a string, flag it as a brief-level decision for the orchestrator.
+- **Package-private helpers escape reflection scans** that only cover public types; when a structural test guards an invariant, check helpers by grep too.
