@@ -12,4 +12,5 @@ Format: `YYYY-MM-DD · <who: orchestrator|human> · <context in one line> → <d
 - 2026-09-19 · orchestrator · M0-T4 needs service containers but T2 owns `docker-compose.yml` → services go in an overlay `docker-compose.services.yml`.
 - 2026-09-19 · orchestrator · Event envelope shape is needed before M1 → fixed in briefs/M0/M0-T4.md (`EventEnvelope` record: eventId, eventType, tenantId, caseId, producer, occurredAt, idempotencyKey, payloadHash, payloadJson); M1-T2 builds on it, changes after M1 closes are a PLAN §6.4 escalation.
 - 2026-09-19 · orchestrator · Dev machine has Python 3.11 only → workers require 3.12 and `uv` installs it; no build depends on system Python.
+- 2026-09-19 · human · GitHub remote → `https://github.com/utkarsh199708/landverify.git` (`origin`); `main` is pushed after every integrated wave.
 - 2026-09-19 · orchestrator · Git on this machine has `core.autocrlf=true` → repo sets `core.autocrlf=false` locally and M0-T1 adds `.gitattributes` with `eol=lf` for scripts and `gradlew`.

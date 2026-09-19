@@ -18,4 +18,4 @@ Subagents append here instead of asking. The orchestrator answers inline (`→ a
 <!-- <TASK-ID>: question → answer -->
 
 - M0 (orchestrator, 2026-09-19): The development machine has no JDK, no GNU make, no `uv`, no Docker and no WSL (checked 2026-09-19). Coders cannot run `make lint test` or `make up`, so no M0 acceptance criterion can be verified locally. Escalated under PLAN §6.6. → *pending human: install JDK 21, GNU make, uv, Docker Desktop (needs WSL2), or point the build at another machine.*
-- M0-T3 (orchestrator, 2026-09-19): No GitHub remote exists. "Green run on main" needs an org/repo. → *pending human: which GitHub org/repo?*
+- M0-T3 (orchestrator, 2026-09-19): No GitHub remote exists. "Green run on main" needs an org/repo. → answered 2026-09-19: `https://github.com/utkarsh199708/landverify.git`, added as `origin`.
