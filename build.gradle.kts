@@ -53,9 +53,9 @@ subprojects {
   // available inside `subprojects {}`, so these coordinates are pinned inline here;
   // Spring versions stay in gradle/libs.versions.toml and are applied in each service.
   dependencies {
-    "testImplementation"(platform("org.junit:junit-bom:5.10.3"))
+    "testImplementation"(platform("org.junit:junit-bom:6.1.3"))
     "testImplementation"("org.junit.jupiter:junit-jupiter")
-    "testImplementation"("org.assertj:assertj-core:3.26.3")
+    "testImplementation"("org.assertj:assertj-core:3.27.7")
     "testRuntimeOnly"("org.junit.platform:junit-platform-launcher")
   }
 }
