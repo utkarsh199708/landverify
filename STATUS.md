@@ -4,7 +4,7 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 
 | Milestone | State | Waves done | Last integrated | Notes |
 | --- | --- | --- | --- | --- |
-| M0 Repo bootstrap | in progress | 0 | — | wave 1a = T1 running; T2 waits for Docker; wave 2 = T3+T4 |
+| M0 Repo bootstrap | in progress | 2 | 153df0d (T1, T3) | T2 + T4 wait for Docker; CI green on main |
 | M1 Domain + case service | not started | 0 | — | |
 | M2 Rules engine + JH pack | not started | 0 | — | needs human legal sign-off before merge (PLAN §6) |
 | M3 Title engine | not started | 0 | — | |
@@ -20,7 +20,7 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 | --- | --- | --- | --- | --- |
 | M0-T1 | merged 2026-09-19 | wave/M0-T1 | REWRITE BRIEF (brief defect only; code clean) → merged after brief reworded | 69c4d06 |
 | M0-T2 | brief ready; held until Docker is installed | | | |
-| M0-T3 | merged 2026-09-19 | wave/M0-T3 | MERGE | e1cdc01 |
+| M0-T3 | merged 2026-09-19; CI green on main (run 35443289078) | wave/M0-T3 | MERGE | e1cdc01 + 153df0d |
 | M0-T4 | brief ready (wave 2, after T1+T2) | | | |
 
 ## Deferred MAJORs
