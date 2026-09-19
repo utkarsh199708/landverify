@@ -22,8 +22,11 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 | M0-T2 | merged 2026-09-19 | wave/M0-T2 | SEND BACK (.env.example, Kafka listeners) → MERGE | a34dc29 |
 | M0-T3 | merged 2026-09-19; CI green on main (run 35443289078) | wave/M0-T3 | MERGE | e1cdc01 + 153df0d |
 | M0-T4 | merged 2026-09-19 | wave/M0-T4 | MERGE (+ Makefile follow-up) | 09bb5ea |
-| M1-T1 | dispatched 2026-09-19 | wave/M1-T1 | | |
+| M1-T1 | in review 2026-09-19 | wave/M1-T1 | | |
 | M1-T4 | dispatched 2026-09-19 | wave/M1-T4 | | |
+| M1-T2 | brief ready (wave 2, after T1) | | | |
+| M1-T5 | brief ready (wave 2, after T1+T4) | | | |
+| M1-T6 | brief ready (wave 2, after T1) | | | |
 
 ## Deferred MAJORs
 
