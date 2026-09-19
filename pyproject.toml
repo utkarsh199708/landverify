@@ -1,0 +1,20 @@
+# Virtual uv workspace root (no [project]; it ships no code of its own).
+# The two workers are the members; dev tooling (pytest, ruff) is shared here.
+[tool.uv.workspace]
+members = ["workers/docproc", "workers/llm-gateway"]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["workers"]
+# Two workers each ship tests/test_smoke.py; importlib mode lets pytest import
+# both same-named modules without __init__.py collision.
+addopts = "--import-mode=importlib"

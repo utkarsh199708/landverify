@@ -1,15 +1,22 @@
-# Stub until M0-T1 lands. Targets are the contract; M0-T1 implements them.
+# Root build contract (CLAUDE.md "Commands"). Runs under GNU make in Git Bash on
+# Windows and under bash on Ubuntu CI. Use ./gradlew and forward-slash paths only.
+# `&&` (not `;`) so a failure in the first toolchain stops the target non-zero.
 .PHONY: up down test lint fmt rules-test
 
 up:
-	@echo "not bootstrapped yet — see briefs/M0/M0-T2.md"; exit 1
+	docker compose up -d --wait --wait-timeout 90
+
 down:
-	@echo "not bootstrapped yet — see briefs/M0/M0-T2.md"; exit 1
+	docker compose down -v --remove-orphans
+
 test:
-	@echo "not bootstrapped yet — see briefs/M0/M0-T1.md"; exit 1
+	./gradlew test && uv run pytest
+
 lint:
-	@echo "not bootstrapped yet — see briefs/M0/M0-T1.md"; exit 1
+	./gradlew spotlessCheck checkstyleMain checkstyleTest && uv run ruff check . && uv run ruff format --check .
+
 fmt:
-	@echo "not bootstrapped yet — see briefs/M0/M0-T1.md"; exit 1
+	./gradlew spotlessApply && uv run ruff format . && uv run ruff check --fix .
+
 rules-test:
 	@echo "not bootstrapped yet — see briefs/M2/M2-T3.md"; exit 1
