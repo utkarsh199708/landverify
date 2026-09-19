@@ -4,7 +4,7 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 
 | Milestone | State | Waves done | Last integrated | Notes |
 | --- | --- | --- | --- | --- |
-| M0 Repo bootstrap | briefs written, dispatch blocked | 0 | — | wave 1 = T1+T2, wave 2 = T3+T4; blocked on local toolchain (see QUESTIONS.md) |
+| M0 Repo bootstrap | in progress | 0 | — | wave 1a = T1 running; T2 waits for Docker; wave 2 = T3+T4 |
 | M1 Domain + case service | not started | 0 | — | |
 | M2 Rules engine + JH pack | not started | 0 | — | needs human legal sign-off before merge (PLAN §6) |
 | M3 Title engine | not started | 0 | — | |
@@ -18,8 +18,8 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 
 | Task | State | Branch | Reviewer verdict | Merged commit |
 | --- | --- | --- | --- | --- |
-| M0-T1 | brief ready (wave 1) | | | |
-| M0-T2 | brief ready (wave 1) | | | |
+| M0-T1 | dispatched 2026-09-19 | wave/M0-T1 | | |
+| M0-T2 | brief ready; held until Docker is installed | | | |
 | M0-T3 | brief ready (wave 2, after T1) | | | |
 | M0-T4 | brief ready (wave 2, after T1+T2) | | | |
 
