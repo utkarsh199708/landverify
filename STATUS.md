@@ -19,7 +19,7 @@ Updated by the orchestrator after every integrated wave. If this file disagrees 
 | Task | State | Branch | Reviewer verdict | Merged commit |
 | --- | --- | --- | --- | --- |
 | M0-T1 | merged 2026-09-19 | wave/M0-T1 | REWRITE BRIEF (brief defect only; code clean) → merged after brief reworded | 69c4d06 |
-| M0-T2 | brief ready; held until Docker is installed | | | |
+| M0-T2 | dispatched 2026-09-19 | wave/M0-T2 | | |
 | M0-T3 | merged 2026-09-19; CI green on main (run 35443289078) | wave/M0-T3 | MERGE | e1cdc01 + 153df0d |
 | M0-T4 | brief ready (wave 2, after T1+T2) | | | |
 
